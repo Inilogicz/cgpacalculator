@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0faff;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4caf50;
+            padding: 15px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar h1 {
+            color: white;
+            font-weight: 700;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Student Profile Section */
+        .student-profile {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #ffffff;
+            padding: 30px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .student-profile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .student-profile img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+            cursor: pointer; /* Change cursor to pointer */
+        }
+
+        .student-profile h2 {
+            color: #4caf50;
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .student-info {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #666;
+            text-align: center;
+        }
+
+        .student-info div {
+            margin-bottom: 10px;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-box {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chart-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Chart Analysis */
+        .chart-analysis {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chart-analysis:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        #history-section {
+            display: none;
+            margin-top: 40px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+                background-color: #4caf50;
+                position: absolute;
+                top: 70px;
+                right: 30px;
+                border-radius: 12px;
+                padding: 20px;
+                width: 200px;
+            }
+
+            .navbar ul.active {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .student-profile {
+                text-align: center;
+            }
+
+            .chart-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <h1>CGPA Dashboard</h1>
+            <ul id="nav-links">
+                <li><a href="#" onclick="showHistory()">History</a></li>
+                <li><a href="calculator.html">Calculator</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+            <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
+        </nav>
+
+        <!-- Student Profile -->
+        <ddiv class="student-profile">
+            <input type="file" id="profileUpload" accept="image/*" style="display: none;" onchange="loadProfilePicture(event)">
+            <img id="profileImage" src="https://via.placeholder.com/120" alt="Student Photo" onclick="document.getElementById('profileUpload').click();">
+            <div>
+                <h2>Welcome, <span id="studentName">John Doe</span>!</h2>
+                <div class="student-info">
+                    <div>Matric No: <span id="matricNo">123456</span></div>
+                    <div>Session: <span id="session">2024/2025</span></div>
+                    <div>Department: <span id="department">Computer Science</span></div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <div class="chart-box">
+                <canvas id="cgpaChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Chart Analysis Section -->
+        <div class="chart-analysis">
+            <h3>CGPA Analysis</h3>
+            <p id="cgpaAnalysisText">Your academic performance is consistently improving! Keep up the good work!</p>
+        </div>
+
+        <!-- History Section -->
+        <div id="history-section">
+            <h2>CGPA History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Semester</th>
+                        <th>Total Units</th>
+                        <th>GPA</th>
+                        <th>CGPA</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <tr>
+                        <td>First Semester</td>
+                        <td>24</td>
+                        <td>4.5</td>
+                        <td>4.3</td>
+                    </tr>
+                    <tr>
+                        <td>Second Semester</td>
+                        <td>24</td>
+                        <td>4.8</td>
+                        <td>4.5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Load Profile Picture
+        function loadProfilePicture(event) {
+            const img = document.getElementById('profileImage');
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        // Chart Configuration
+        const ctx = document.getElementById('cgpaChart').getContext('2d');
+        const cgpaChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Semester 1', 'Semester 2', 'Semester 3', 'Semester 4'],
+                datasets: [{
+                    label: 'CGPA',
+                    data: [4.2, 4.5, 4.6, 4.8],
+                    backgroundColor: '#4caf50',
+                    borderColor: '#388e3c',
+                    borderWidth: 1,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }
+            }
+        });
+
+        // Menu Toggle Functionality
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        function showHistory() {
+            const historySection = document.getElementById('history-section');
+            historySection.style.display = historySection.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function logout() {
+            // Add your logout logic here
+            alert("Logging out...");
+        }
+        firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        const userId = user.uid;
+        firebase.firestore().collection('users').doc(userId).get().then((doc) => {
+            if (doc.exists) {
+                const userData = doc.data();
+                // Update the dashboard with user data
+                document.getElementById('studentName').textContent = userData.name;
+                document.getElementById('matricNo').textContent = userData.matric;
+                document.getElementById('session').textContent = userData.session; // Ensure this field is saved in Firestore
+                document.getElementById('department').textContent = userData.department;
+            }
+        }).catch((error) => {
+            console.error("Error fetching user data: ", error);
+        });
+    } else {
+        // User is signed out, redirect to login
+        window.location.href = 'login.html';
+    }
+});
+
+    </script>
+ <script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+<script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6TuWB3QaOC1Gtxot4IqWNFCYR_QRAHcE",
+            authDomain: "cgpa-calculator-123.firebaseapp.com",
+            projectId: "cgpa-calculator-123",
+            storageBucket: "cgpa-calculator-123.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcd1234efgh5678"
+        };
+
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Handle authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loadStudentData(user);
+            } else {
+                window.location.href = 'signup.html';
+            }
+        });
+
+        // Function to load student data
+        async function loadStudentData(user) {
+            try {
+                const docRef = doc(db, 'students', user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const studentData = docSnap.data();
+                    document.getElementById('studentName').textContent = studentData.name;
+                    document.getElementById('matricNo').textContent = studentData.matricNo;
+                    document.getElementById('session').textContent = studentData.session;
+                    document.getElementById('department').textContent = studentData.department;
+                } else {
+                    console.log("No such document!");
+                }
+            } catch (error) {
+                console.error("Error fetching document: ", error);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            signOut(auth).then(() => {
+                window.location.href = 'signup.html';
+            }).catch((error) => {
+                console.error("Error logging out: ", error);
+            });
+        }
+
+        // Menu toggle function for the hamburger button
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Profile picture upload function
+        function loadProfilePicture(event) {
+            const profileImage = document.getElementById('profileImage');
+            profileImage.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        // Show CGPA history
+        function showHistory() {
+            document.getElementById('history-section').style.display = 'block';
+        }
+    });
+</script>
+    
+
+</body>
+</html>

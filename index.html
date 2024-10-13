@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content= "width=device-width, 
+                                    initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="calculator">
+        <span id="unitError" class="error"></span>
+        <span id="inputError" class="error"></span>
+        <br>
+        <h2>GROUP F CGPA Calculator</h2>
+        <form id="cgpaForm">
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" required>
+
+            <label for="grade">Grade:</label>
+            <select id="grade">
+                <option value="" disabled selected>Select Grade</option> 
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+
+            <label for="unit">Unit:</label>
+            <input type="number" id="unit" min="1" required>
+
+            <button type="button" onclick="addSubject()">
+                  Add / Edit Subject
+              </button>
+        </form>
+        <h3>Calculate CGPA</h3>
+        <table id="subjectTable">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Grade</th>
+                    <th>Unit</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="subjectList"></tbody>
+        </table>
+
+        <div id="cgpaResult">
+            <h2 id="cgpa">0.00</h2>
+            <button id="downloadButton" style="display: none;" onclick="downloadCGPA()">Download CGPA Report</button>
+            <button id="printButton" style="display: none;" onclick="window.print()">Print CGPA Report</button>
+        </div>
+        
+
+        <button type="button" onclick="calculateCGPA()">
+              Calculate CGPA
+          </button>
+        <button type="button" onclick="resetForm()">
+              Reset
+          </button>
+      
+
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script type="module" src="app.js"></script>
+
+    
+    <script type="module">
+        // Import Firebase packages here if needed
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-auth.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+    
+        // Firebase setup code here
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6TuWB3QaOC1Gtxot4IqWNFCYR_QRAHcE",
+            authDomain: "cgpa-calculator-97430.firebaseapp.com",
+            projectId: "cgpa-calculator-97430",
+            storageBucket: "cgpa-calculator-97430.appspot.com",
+            messagingSenderId: "945044547837",
+            appId: "YOUR_APP_ID"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+    </script>
+    
+
+</body>
+
+</html>
